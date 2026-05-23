@@ -11,12 +11,13 @@ The repository currently contains:
 - deterministic encounter startup with seeded initiative
 - turn handling for `move_unit`, `use_action`, `attack_target`, `dash`, and `end_turn`
 - a first-class Attack Action PoC with simplified DnD 5e hit, miss, and crit handling
+- structured attack resolution output with visible d20 rolls, AC comparison, and damage breakdowns
 - movement reachability queries
 - a Pygame-based tactical viewer foundation with static isometric map rendering
-- a playable viewer demo with movement, turn ending, overlays, and on-screen feedback
+- a playable viewer demo with movement, turn ending, overlays, structured HUD sections, and on-screen feedback
 - automated tests for the current runtime behavior
 
-The current viewer implementation now supports map rendering, unit visualization, active-turn display, movement selection, Attack Action targeting, end-turn input, and basic demo feedback.
+The current viewer implementation now supports map rendering, unit visualization, active-turn display, movement selection, Attack Action targeting, end-turn input, grouped HUD sections, and visible roll feedback.
 
 ## Starting the project
 
@@ -36,7 +37,7 @@ python3 main.py headless
 
 If no mode is provided, `headless` is used by default.
 
-This starts the headless runtime, loads the training-yard encounter, and prints a summary of the current combat state plus example commands.
+This starts the headless runtime, loads the training-yard encounter, prints the current combat state, then runs a deterministic sample sequence and shows the full attack resolution including d20 roll, AC comparison, damage dice, and HP change.
 
 ### Tactical viewer
 

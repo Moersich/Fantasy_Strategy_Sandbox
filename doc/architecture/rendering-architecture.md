@@ -38,7 +38,7 @@ The current viewer uses:
 - simple colored terrain polygons
 - circular unit markers
 - overlay rendering for reachable tiles, selection, and active-turn highlighting
-- a HUD panel for encounter, turn, and feedback state
+- a grouped HUD panel for turn state, selection context, last-roll breakdown, and controls
 
 This implementation intentionally favors architectural clarity and delivery speed over graphical fidelity.
 

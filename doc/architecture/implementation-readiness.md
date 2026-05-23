@@ -38,10 +38,11 @@ The following pieces already exist in code:
 - deterministic initiative and encounter startup
 - command execution for movement, Attack Action, dash, and end turn
 - an explicit action-selection/query surface for the active unit
+- structured attack-resolution output for visible roll and damage feedback
 - movement-range query logic
 - Pygame viewer entry and runtime split
 - isometric-style map rendering
-- unit rendering, active-turn highlighting, reachable-tile overlays, and HUD feedback
+- unit rendering, active-turn highlighting, reachable-tile overlays, grouped HUD feedback, and visible roll breakdowns
 - viewer input for movement and end turn
 - automated runtime tests
 
@@ -106,7 +107,7 @@ The next implementation step should build on the playable viewer demo:
 
 1. complete missing deterministic combat queries such as line of sight and cover,
 2. expand viewer interaction beyond movement, Attack Action, and end turn,
-3. add richer combat feedback and scenario coverage,
+3. add richer combat feedback and scenario coverage beyond the current visible roll breakdowns,
 4. keep the viewer aligned with the same core command model.
 
 ## Developer Review Outcome

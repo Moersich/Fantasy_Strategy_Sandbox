@@ -16,7 +16,7 @@ Responsibilities:
 Current repository status:
 - implemented as a Pygame-based internal demo
 - renders the training-yard map
-- displays units, active-turn highlighting, reachable tiles, and HUD feedback
+- displays units, active-turn highlighting, reachable tiles, grouped HUD sections, and visible roll feedback
 - forwards movement and end-turn input into the existing command path
 
 The tactical viewer must not:
@@ -36,6 +36,7 @@ Responsibilities:
 Current repository status:
 - implemented as the current executable slice
 - exposed through `main.py` and the `GameRuntime` application service
+- prints deterministic sample combat output with visible roll and damage details
 - covered by automated tests for encounter startup and core commands
 
 Architectural consequence:
@@ -66,7 +67,7 @@ The application layer is the composition root. It decides:
 In a turn-based game it also wires:
 - the turn engine
 - command handlers for move, attack, dash, and end turn
-- presentation state for active-unit and round indicators
+- presentation state for active-unit indicators, roll breakdowns, and round indicators
 
 ## Main Loop
 The preferred runtime model is a simple single-process loop:

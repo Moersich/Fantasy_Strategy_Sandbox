@@ -47,6 +47,7 @@ Commands should:
 - reference logical entities and tiles
 - be validated before mutation
 - produce deterministic state transitions
+- surface structured resolution details for presentation and debugging
 - be reusable in viewer and headless modes
 
 Example command payloads:

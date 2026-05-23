@@ -31,6 +31,7 @@ Examples:
 - hit points
 - active effects
 - turn state
+- last action resolution including roll and damage details
 
 ### 3. Derived Query State
 Derived query state is computed on demand and should not be persisted as the source of truth.
@@ -136,6 +137,7 @@ Each command is validated against explicit turn state before it mutates encounte
 This is important because:
 - the tactical viewer can submit commands one by one
 - the headless core can replay the same command stream deterministically
+- both runtime modes can present the same structured roll and damage breakdowns
 - illegal actions can be rejected without mixing UI and combat rules
 
 Suggested command shape:
