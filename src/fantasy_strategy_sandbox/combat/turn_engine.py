@@ -48,7 +48,9 @@ class TurnEngine:
         if state.status != "active":
             raise ValueError("Encounter is not active.")
 
-        command_type = getattr(command, "type")
+        command_type = getattr(command, "type", None)
+        if not command_type:
+            raise ValueError("Command requires a type.")
 
         if command_type == "move_unit":
             self._move_unit(state, game_map, command)
@@ -104,7 +106,10 @@ class TurnEngine:
         if target_payload is None:
             raise ValueError("move_unit requires a target tile.")
 
-        target = TileCoord(x=int(target_payload["x"]), y=int(target_payload["y"]))
+        try:
+            target = TileCoord(x=int(target_payload["x"]), y=int(target_payload["y"]))
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError("move_unit target must include integer x and y coordinates.") from exc
         occupied = {unit.tile_position for unit in state.units.values() if unit.alive}
         reachable = reachable_tiles(
             game_map=game_map,
@@ -129,6 +134,8 @@ class TurnEngine:
             raise ValueError("attack_target requires a target_id.")
         if target_id not in state.units:
             raise ValueError(f"Unknown target unit {target_id}.")
+        if target_id == actor.id:
+            raise ValueError(f"{actor.id} cannot target itself.")
 
         target = state.units[target_id]
         if not target.alive:

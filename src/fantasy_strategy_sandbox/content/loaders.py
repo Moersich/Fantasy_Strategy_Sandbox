@@ -6,6 +6,8 @@ from pathlib import Path
 from fantasy_strategy_sandbox.combat.models import AttackDefinition, EncounterDefinition, UnitDefinition
 from fantasy_strategy_sandbox.world.models import GameMap, Tile, TileCoord
 
+_SUPPORTED_MAP_VERSION = 1
+
 
 def load_map(path: Path) -> GameMap:
     data = _read_json(path)
@@ -16,6 +18,11 @@ def load_map(path: Path) -> GameMap:
 
     width = int(data["size"]["width"])
     height = int(data["size"]["height"])
+    if width <= 0 or height <= 0:
+        raise ValueError("Map dimensions must be positive.")
+    version = int(data["version"])
+    if version != _SUPPORTED_MAP_VERSION:
+        raise ValueError(f"Unsupported map version {version}.")
     tiles: dict[TileCoord, Tile] = {}
 
     for tile_data in data["tiles"]:
@@ -34,7 +41,12 @@ def load_map(path: Path) -> GameMap:
             blocks_los=bool(tile_data.get("blocks_los", False)),
             cover_type=str(tile_data.get("cover_type", "none")),
         )
+        if tile.movement_cost <= 0:
+            raise ValueError(f"Tile {coord} must have a positive movement cost.")
         tiles[coord] = tile
+
+    if not tiles:
+        raise ValueError("Map must define at least one tile.")
 
     spawns: dict[str, TileCoord] = {}
     for spawn_data in data["spawns"]:
@@ -49,7 +61,7 @@ def load_map(path: Path) -> GameMap:
 
     return GameMap(
         map_id=str(data["map_id"]),
-        version=int(data["version"]),
+        version=version,
         width=width,
         height=height,
         tiles=tiles,
@@ -64,10 +76,20 @@ def load_encounter(path: Path) -> EncounterDefinition:
     if missing:
         raise ValueError(f"Encounter file is missing keys: {sorted(missing)}")
 
+    teams = data["teams"]
+    if not teams:
+        raise ValueError("Encounter must define at least one team.")
+
     unit_definitions: list[UnitDefinition] = []
+    seen_teams: set[str] = set()
     seen_units: set[str] = set()
-    for team_data in data["teams"]:
+    for team_data in teams:
         team_id = str(team_data["id"])
+        if team_id in seen_teams:
+            raise ValueError(f"Duplicate team id {team_id}.")
+        seen_teams.add(team_id)
+        if not team_data["units"]:
+            raise ValueError(f"Team {team_id} must define at least one unit.")
         for unit_data in team_data["units"]:
             unit_id = str(unit_data["id"])
             if unit_id in seen_units:
@@ -85,6 +107,21 @@ def load_encounter(path: Path) -> EncounterDefinition:
             ]
             if not attacks:
                 raise ValueError(f"Unit {unit_id} must have at least one attack.")
+            if any(attack.range <= 0 for attack in attacks):
+                raise ValueError(f"Unit {unit_id} must have attacks with positive range.")
+
+            max_hp = int(unit_data["max_hp"])
+            hp = int(unit_data.get("hp", unit_data["max_hp"]))
+            ac = int(unit_data["ac"])
+            speed = int(unit_data["speed"])
+            if max_hp <= 0:
+                raise ValueError(f"Unit {unit_id} must have positive max_hp.")
+            if hp < 0 or hp > max_hp:
+                raise ValueError(f"Unit {unit_id} has hp outside the valid range.")
+            if ac <= 0:
+                raise ValueError(f"Unit {unit_id} must have positive ac.")
+            if speed < 0:
+                raise ValueError(f"Unit {unit_id} must have non-negative speed.")
 
             unit_definitions.append(
                 UnitDefinition(
@@ -92,10 +129,10 @@ def load_encounter(path: Path) -> EncounterDefinition:
                     name=str(unit_data["name"]),
                     team=team_id,
                     spawn_id=str(unit_data["spawn_id"]),
-                    max_hp=int(unit_data["max_hp"]),
-                    hp=int(unit_data.get("hp", unit_data["max_hp"])),
-                    ac=int(unit_data["ac"]),
-                    speed=int(unit_data["speed"]),
+                    max_hp=max_hp,
+                    hp=hp,
+                    ac=ac,
+                    speed=speed,
                     initiative_bonus=int(unit_data.get("initiative_bonus", 0)),
                     attacks=attacks,
                 )

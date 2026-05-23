@@ -32,8 +32,8 @@ class GameRuntime:
 
     @classmethod
     def from_files(cls, map_path: str | Path, encounter_path: str | Path) -> "GameRuntime":
-        game_map = load_map(Path(map_path))
-        encounter_definition = load_encounter(Path(encounter_path))
+        game_map = load_map(_resolve_content_path(map_path))
+        encounter_definition = load_encounter(_resolve_content_path(encounter_path))
         return cls(game_map=game_map, encounter_definition=encounter_definition)
 
     def start_encounter(self) -> EncounterState:
@@ -75,3 +75,17 @@ class GameRuntime:
                 for unit in state.units.values()
             ],
         }
+
+
+def _resolve_content_path(path: str | Path) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        return candidate
+    if candidate.exists():
+        return candidate
+
+    project_root = Path(__file__).resolve().parents[3]
+    resolved = project_root / candidate
+    if resolved.exists():
+        return resolved
+    return candidate
