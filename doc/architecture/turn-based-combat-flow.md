@@ -51,7 +51,7 @@ Commands should:
 Example command payloads:
 
 ```python
-{"type": "attack_target", "attacker_id": "fighter_1", "target_id": "goblin_2"}
+{"type": "attack_target", "unit_id": "fighter_1", "target_id": "goblin_2"}
 {"type": "end_turn", "unit_id": "fighter_1"}
 ```
 

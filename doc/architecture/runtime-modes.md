@@ -7,11 +7,17 @@ The architecture should support multiple runtime modes without changing the game
 The tactical viewer is the primary runtime mode for Version 1.
 
 Responsibilities:
-- render a small tactical map in a static 3D isometric view
+- render a small tactical map in a static isometric tactical view
 - display units, highlights, and debug overlays
 - forward player input to application services
 - visualize results returned by the world and combat systems
 - present the currently active unit, current round, and available turn actions
+
+Current repository status:
+- implemented as a Pygame-based internal demo
+- renders the training-yard map
+- displays units, active-turn highlighting, reachable tiles, and HUD feedback
+- forwards movement and end-turn input into the existing command path
 
 The tactical viewer must not:
 - calculate game rules inside render objects
@@ -43,7 +49,7 @@ Although the tactical viewer remains the primary product-facing target, the repo
 2. validate rules in tests without a renderer,
 3. add the viewer as an adapter on top of the same core.
 
-The next runtime milestone is therefore not a second gameplay path, but a viewer adapter over the already working headless systems.
+That viewer adapter now exists in a first playable form. The next runtime milestone is therefore a richer viewer increment, not a second gameplay path.
 
 ## Future Mode: Map Editing
 An editor is a future concern, not a Version 1 requirement.

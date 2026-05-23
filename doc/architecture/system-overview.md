@@ -1,7 +1,7 @@
 # System Overview
 
 ## Purpose
-This document describes the target architecture for the Python-based tactical combat sandbox and its later 3D isometric viewer.
+This document describes the architecture of the Python-based tactical combat sandbox and its isometric tactical viewer.
 
 The architectural goal is to support:
 - lightweight 3D isometric rendering
@@ -12,14 +12,17 @@ The architectural goal is to support:
 - later reuse of the same core in headless simulations
 
 ## Current Repository State
-The repository already contains a working Python headless core slice:
+The repository now contains a working Python headless core and a first playable tactical viewer demo:
 - map and encounter content loading from JSON
 - combat and turn-state models
 - deterministic encounter startup with seeded initiative
 - command execution for movement, attack, dash, and end turn
 - movement queries and automated runtime tests
+- a Pygame-based viewer runtime
+- static isometric-style terrain rendering
+- unit visualization, active-turn highlighting, reachable-tile overlays, click-to-move, and end-turn input
 
-The primary architectural gap is no longer the gameplay core, but the absence of the tactical viewer, line-of-sight/cover queries, and a synchronized project-level roadmap in the documentation.
+The primary architectural gaps are no longer the basic viewer or core integration. The remaining gaps are line-of-sight and cover queries, richer combat interaction, and further demo polish on top of the current viewer slice.
 
 ## How To Read This Architecture
 For day-to-day implementation work, use the documents in this order:
@@ -35,7 +38,7 @@ This order moves from system boundaries to state model, then to runtime flow, op
 
 ## Scope of Version 1
 Version 1 focuses on:
-- static 3D isometric camera
+- static isometric tactical presentation
 - flat tactical maps
 - simple visuals that run on modest hardware
 - explicit round-based play with initiative-driven turns
@@ -73,6 +76,8 @@ project/
   main.py
   src/fantasy_strategy_sandbox/
     app/
+      cli.py
+      demo.py
       runtime.py
     combat/
       models.py
@@ -81,23 +86,38 @@ project/
       loaders.py
     queries/
       movement.py
+    render/
+      projection.py
+      viewer.py
     world/
       models.py
   tests/
+    test_content_loaders.py
+    test_demo_runtime.py
+    test_render_projection.py
     test_runtime.py
+    test_viewer_state_visualization.py
 ```
 
-This is the current working baseline. The architecture still anticipates additional packages such as `render/`, `iso/`, and more query modules like `los.py` and `cover.py`, but those are future implementation targets rather than current repository contents.
+This is the current working baseline. The architecture still anticipates additional modules such as `queries/los.py`, `queries/cover.py`, and possibly a dedicated `iso/` package if projection and picking grow beyond the current lightweight adapter implementation.
 
 ## Current Delivery Slice
-Today the repository delivers the **Headless Core** runtime mode:
-- load map and encounter data
-- start an encounter deterministically
-- execute discrete turn commands
-- inspect encounter summary in a CLI/demo entry point
-- verify core behavior through automated tests
+Today the repository delivers two connected runtime slices:
 
-The next planned delivery slice is the **Tactical Viewer**, which should remain an adapter over the same core instead of becoming a second gameplay implementation.
+- **Headless Core**
+  - load map and encounter data
+  - start an encounter deterministically
+  - execute discrete turn commands
+  - inspect encounter summary in a CLI/demo entry point
+  - verify core behavior through automated tests
+
+- **Tactical Viewer Demo**
+  - render the training-yard map in a lightweight isometric-style view
+  - display units, active turn state, and simple HUD feedback
+  - show reachable-tile overlays for the active unit
+  - forward click-to-move and end-turn input into the existing core
+
+The next planned delivery slice is not the first viewer itself, but the next viewer increment: richer combat interaction and missing deterministic combat queries such as line of sight and cover.
 
 ## Turn-Based Architecture Consequence
 The game must behave as a discrete state machine:

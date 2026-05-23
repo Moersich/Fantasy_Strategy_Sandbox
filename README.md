@@ -1,6 +1,6 @@
 # Fantasy Strategy Sandbox
 
-Fantasy Strategy Sandbox is a Python-based tactical combat sandbox focused on a deterministic, turn-based core that can later drive both a headless simulation mode and a tactical viewer.
+Fantasy Strategy Sandbox is a Python-based tactical combat sandbox with a deterministic, turn-based core that now drives both a headless simulation mode and a tactical viewer demo.
 
 ## Current implementation status
 
@@ -12,9 +12,10 @@ The repository currently contains:
 - turn handling for `move_unit`, `attack_target`, `dash`, and `end_turn`
 - movement reachability queries
 - a Pygame-based tactical viewer foundation with static isometric map rendering
+- a playable viewer demo with movement, turn ending, overlays, and on-screen feedback
 - automated tests for the current runtime behavior
 
-The current viewer implementation covers the rendering foundation for the training-yard map. Unit rendering and player interaction are still part of the next stages.
+The current viewer implementation now supports map rendering, unit visualization, active-turn display, movement selection, end-turn input, and basic demo feedback.
 
 ## Starting the project
 
@@ -44,7 +45,13 @@ Run the Pygame viewer:
 python3 main.py viewer
 ```
 
-This starts the current rendering demo for the training-yard map.
+This starts the current interactive rendering demo for the training-yard map.
+
+Viewer controls:
+
+- left click on a highlighted tile to move the active unit
+- left click on any other tile to inspect or attempt a destination
+- press `Space` to end the current unit's turn
 
 For a short smoke test run, you can limit the viewer loop:
 

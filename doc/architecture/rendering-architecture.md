@@ -1,7 +1,7 @@
 # Rendering Architecture
 
 ## Goal
-Rendering should provide a readable 3D isometric tactical view while staying lightweight and replaceable.
+Rendering should provide a readable isometric tactical view while staying lightweight and replaceable.
 
 ## Renderer Role
 The renderer is an adapter. It consumes world and query state and produces visuals.
@@ -18,6 +18,7 @@ Version 1:
 - flat terrain tiles
 - simple top surfaces
 - low visual complexity
+- a lightweight Pygame implementation using projected tile diamonds rather than a full 3D engine
 
 Later:
 - visible block sides for height steps
@@ -27,14 +28,25 @@ Later:
 - terrain
 - units
 - highlights
-- debug overlays
+- HUD and debug overlays
 - future effects
+
+## Current Implementation Status
+The current viewer uses:
+- **Pygame** as the binding Version 1 rendering stack
+- a lightweight isometric-style projection derived from logical tile coordinates
+- simple colored terrain polygons
+- circular unit markers
+- overlay rendering for reachable tiles, selection, and active-turn highlighting
+- a HUD panel for encounter, turn, and feedback state
+
+This implementation intentionally favors architectural clarity and delivery speed over graphical fidelity.
 
 ## Performance Strategy
 Version 1 optimizes for modest hardware:
-- simple lighting
-- limited material variety
-- reused tile meshes or instancing where supported
+- no complex lighting
+- limited color-driven visual language
+- lightweight 2D polygon drawing rather than engine-heavy scene management
 - small tactical maps
 
 ## Invalidation Strategy

@@ -1,7 +1,7 @@
 # Implementation Readiness
 
 ## Purpose
-This document defines which architectural prerequisites are already satisfied, which implementation slices are complete, and what still must be decided before the tactical viewer is built.
+This document defines which architectural prerequisites are already satisfied, which implementation slices are complete, and what remains after the first playable tactical viewer demo.
 
 ## Architecture Is Ready When
 - runtime modes are defined
@@ -24,6 +24,8 @@ This document defines which architectural prerequisites are already satisfied, w
 - deterministic initiative/replay strategy is decided
 - the current headless core is robust enough to serve as the single gameplay authority
 
+**Current assessment:** these conditions are met for the current Pygame-based viewer demo.
+
 ## Current Repository Baseline
 
 The following pieces already exist in code:
@@ -36,6 +38,10 @@ The following pieces already exist in code:
 - deterministic initiative and encounter startup
 - command execution for movement, attack, dash, and end turn
 - movement-range query logic
+- Pygame viewer entry and runtime split
+- isometric-style map rendering
+- unit rendering, active-turn highlighting, reachable-tile overlays, and HUD feedback
+- viewer input for movement and end turn
 - automated runtime tests
 
 ## Already Completed Foundation Deliverables
@@ -45,6 +51,7 @@ The following pieces already exist in code:
 - turn state and command processing design
 - encounter lifecycle specification
 - first executable headless combat slice
+- first playable tactical viewer demo
 
 ## Delivery Acceptance Criteria
 
@@ -63,12 +70,16 @@ The following pieces already exist in code:
 - encounter end conditions are covered by tests
 - runtime/demo entry point is documented and stable
 
+**Status:** complete
+
 ### Phase 3 - Tactical viewer vertical slice
 - a flat tactical map renders in a static isometric view
 - units can be placed on tiles
 - tile selection or equivalent debug visualization is possible
 - the viewer can show whose turn it is without owning turn logic
 - presentation can remain stable across multiple frames without changing combat state
+
+**Status:** complete
 
 ### Phase 4 - Query completion for combat presentation
 - movement range is computed from logical map data
@@ -81,26 +92,29 @@ The following pieces already exist in code:
 
 ## Open Decisions
 - whether Version 1 needs interactive map editing
-- whether Version 1 needs mouse picking immediately or can start with debug-driven interaction
+- whether Version 1 should keep the current simple click interaction or evolve to more precise tile picking
 - whether future elevation expansion should stay block-based only or later add ramps and stairs
 - whether initiative should be rolled live each encounter or optionally loaded for deterministic replays
-- which rendering stack is the binding Version 1 choice for the tactical viewer
+
+## Binding Decisions
+- Version 1 uses **Pygame** as the rendering stack for the tactical viewer.
 
 ## Current Recommended Next Step
-The next implementation step should not be rendering yet. It should be:
+The next implementation step should build on the playable viewer demo:
 
-1. synchronize project-level documentation with the actual headless core,
-2. harden the headless core with negative tests and clearer validation,
-3. complete missing deterministic combat queries,
-4. then begin the tactical viewer against the stabilized core.
+1. complete missing deterministic combat queries such as line of sight and cover,
+2. expand viewer interaction beyond movement and end turn,
+3. add richer combat feedback and scenario coverage,
+4. keep the viewer aligned with the same core command model.
 
 ## Developer Review Outcome
 At this stage the architecture is complete enough to continue implementation from an existing core rather than from a blank slate.
 
-The remaining open decisions affect scope and user experience, but they no longer block the current technical slice of:
+The remaining open decisions affect scope and user experience, but they no longer block the current technical slices of:
 - map loading
 - encounter initialization
 - turn sequencing
 - logical movement and attack commands
+- first-playable viewer delivery
 
-They do still affect the next viewer-oriented slice.
+They do still affect the next combat and presentation increments.
