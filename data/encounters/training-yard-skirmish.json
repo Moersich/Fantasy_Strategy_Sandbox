@@ -1,0 +1,65 @@
+{
+  "encounter_id": "training-yard-skirmish",
+  "map_id": "training-yard",
+  "initiative_seed": 42,
+  "teams": [
+    {
+      "id": "heroes",
+      "units": [
+        {
+          "id": "fighter_1",
+          "name": "Fighter",
+          "spawn_id": "heroes-a",
+          "max_hp": 14,
+          "ac": 16,
+          "speed": 6,
+          "initiative_bonus": 1,
+          "attacks": [
+            { "name": "Longsword", "attack_bonus": 5, "damage": "1d8+3", "range": 1 }
+          ]
+        },
+        {
+          "id": "rogue_1",
+          "name": "Rogue",
+          "spawn_id": "heroes-b",
+          "max_hp": 10,
+          "ac": 14,
+          "speed": 6,
+          "initiative_bonus": 3,
+          "attacks": [
+            { "name": "Shortbow", "attack_bonus": 5, "damage": "1d6+3", "range": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "goblins",
+      "units": [
+        {
+          "id": "goblin_1",
+          "name": "Goblin",
+          "spawn_id": "goblins-a",
+          "max_hp": 7,
+          "ac": 15,
+          "speed": 6,
+          "initiative_bonus": 2,
+          "attacks": [
+            { "name": "Scimitar", "attack_bonus": 4, "damage": "1d6+2", "range": 1 }
+          ]
+        },
+        {
+          "id": "goblin_2",
+          "name": "Goblin",
+          "spawn_id": "goblins-b",
+          "max_hp": 7,
+          "ac": 15,
+          "speed": 6,
+          "initiative_bonus": 2,
+          "attacks": [
+            { "name": "Shortbow", "attack_bonus": 4, "damage": "1d6+2", "range": 4 }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "map_id": "training-yard",
+  "size": {
+    "width": 5,
+    "height": 5
+  },
+  "tiles": [
+    { "x": 0, "y": 0, "height": 0, "surface_type": "ground" },
+    { "x": 1, "y": 0, "height": 0, "surface_type": "ground" },
+    { "x": 2, "y": 0, "height": 0, "surface_type": "ground" },
+    { "x": 3, "y": 0, "height": 0, "surface_type": "ground" },
+    { "x": 4, "y": 0, "height": 0, "surface_type": "ground" },
+    { "x": 0, "y": 1, "height": 0, "surface_type": "ground" },
+    { "x": 1, "y": 1, "height": 0, "surface_type": "ground" },
+    { "x": 2, "y": 1, "height": 0, "surface_type": "ground" },
+    { "x": 3, "y": 1, "height": 0, "surface_type": "ground" },
+    { "x": 4, "y": 1, "height": 0, "surface_type": "ground" },
+    { "x": 0, "y": 2, "height": 0, "surface_type": "ground" },
+    { "x": 1, "y": 2, "height": 0, "surface_type": "ground" },
+    { "x": 2, "y": 2, "height": 0, "surface_type": "ground" },
+    { "x": 3, "y": 2, "height": 0, "surface_type": "ground", "blocks_movement": true, "blocks_los": true, "cover_type": "full" },
+    { "x": 4, "y": 2, "height": 0, "surface_type": "ground" },
+    { "x": 0, "y": 3, "height": 0, "surface_type": "ground" },
+    { "x": 1, "y": 3, "height": 0, "surface_type": "ground" },
+    { "x": 2, "y": 3, "height": 0, "surface_type": "ground" },
+    { "x": 3, "y": 3, "height": 0, "surface_type": "ground" },
+    { "x": 4, "y": 3, "height": 0, "surface_type": "ground" },
+    { "x": 0, "y": 4, "height": 0, "surface_type": "ground" },
+    { "x": 1, "y": 4, "height": 0, "surface_type": "ground" },
+    { "x": 2, "y": 4, "height": 0, "surface_type": "ground" },
+    { "x": 3, "y": 4, "height": 0, "surface_type": "ground" },
+    { "x": 4, "y": 4, "height": 0, "surface_type": "ground" }
+  ],
+  "spawns": [
+    { "id": "heroes-a", "x": 1, "y": 1 },
+    { "id": "heroes-b", "x": 1, "y": 2 },
+    { "id": "goblins-a", "x": 4, "y": 1 },
+    { "id": "goblins-b", "x": 4, "y": 3 }
+  ]
+}
