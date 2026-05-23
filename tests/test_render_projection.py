@@ -4,7 +4,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from fantasy_strategy_sandbox.render.projection import ProjectionConfig, project_tile, sort_tiles_for_render, tile_polygon
+from fantasy_strategy_sandbox.render.projection import (
+    ProjectionConfig,
+    project_tile,
+    sort_tiles_for_render,
+    tile_polygon,
+    unit_anchor,
+)
 from fantasy_strategy_sandbox.world.models import Tile, TileCoord
 
 
@@ -41,6 +47,11 @@ class RenderProjectionTests(unittest.TestCase):
         ordered = sort_tiles_for_render(tiles)
 
         self.assertEqual([tile.coord for tile in ordered], [TileCoord(0, 0), TileCoord(1, 0), TileCoord(2, 0)])
+
+    def test_unit_anchor_places_units_above_tile_center(self) -> None:
+        config = ProjectionConfig(tile_width=96, tile_height=48, origin_x=300, origin_y=120)
+
+        self.assertEqual(unit_anchor(TileCoord(2, 1), 0, config), (348, 184))
 
 
 if __name__ == "__main__":

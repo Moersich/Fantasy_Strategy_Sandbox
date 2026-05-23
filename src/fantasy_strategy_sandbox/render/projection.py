@@ -34,5 +34,10 @@ def tile_polygon(tile: Tile, config: ProjectionConfig) -> list[tuple[int, int]]:
     ]
 
 
+def unit_anchor(coord: TileCoord, height: int, config: ProjectionConfig) -> tuple[int, int]:
+    center_x, center_y = project_tile(coord, height, config)
+    return center_x, center_y - config.tile_height // 6
+
+
 def sort_tiles_for_render(tiles: list[Tile]) -> list[Tile]:
     return sorted(tiles, key=lambda tile: (tile.coord.x + tile.coord.y, tile.coord.x, tile.coord.y))
