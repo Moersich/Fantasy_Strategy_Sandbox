@@ -16,11 +16,13 @@ from fantasy_strategy_sandbox.world.models import Tile, TileCoord
 
 class RenderProjectionTests(unittest.TestCase):
     def test_project_tile_returns_stable_center_point(self) -> None:
+        """Verify tile projection returns stable screen coordinates."""
         config = ProjectionConfig(tile_width=96, tile_height=48, origin_x=300, origin_y=120)
 
         self.assertEqual(project_tile(TileCoord(2, 1), 0, config), (348, 192))
 
     def test_tile_polygon_creates_diamond_points(self) -> None:
+        """Verify tile polygons use the expected diamond geometry."""
         tile = Tile(
             coord=TileCoord(1, 1),
             height=0,
@@ -38,6 +40,7 @@ class RenderProjectionTests(unittest.TestCase):
         )
 
     def test_sort_tiles_for_render_orders_by_painting_depth(self) -> None:
+        """Verify render sorting follows painter's-order depth."""
         tiles = [
             Tile(TileCoord(2, 0), 0, "ground", 1, False, False, "none"),
             Tile(TileCoord(0, 0), 0, "ground", 1, False, False, "none"),
@@ -49,6 +52,7 @@ class RenderProjectionTests(unittest.TestCase):
         self.assertEqual([tile.coord for tile in ordered], [TileCoord(0, 0), TileCoord(1, 0), TileCoord(2, 0)])
 
     def test_unit_anchor_places_units_above_tile_center(self) -> None:
+        """Verify unit anchors sit slightly above tile centers."""
         config = ProjectionConfig(tile_width=96, tile_height=48, origin_x=300, origin_y=120)
 
         self.assertEqual(unit_anchor(TileCoord(2, 1), 0, config), (348, 184))

@@ -14,6 +14,46 @@ class AttackDefinition:
 
 
 @dataclass(frozen=True)
+class ActionDefinition:
+    id: str
+    name: str
+    resource_cost: str
+    target_type: str
+    attack_name: str | None = None
+    attack_index: int | None = None
+    range: int | None = None
+
+
+@dataclass(frozen=True)
+class DamageRoll:
+    expression: str
+    rolled_dice_count: int
+    dice_sides: int
+    dice_values: tuple[int, ...]
+    modifier: int
+    total: int
+    critical: bool = False
+
+
+@dataclass(frozen=True)
+class ActionResolution:
+    action_id: str
+    actor_id: str
+    target_id: str
+    attack_name: str
+    raw_roll: int
+    attack_bonus: int
+    total_roll: int
+    target_ac: int
+    outcome: str
+    hit: bool
+    critical: bool
+    target_hp_before: int
+    target_hp_after: int
+    damage: DamageRoll | None = None
+
+
+@dataclass(frozen=True)
 class UnitDefinition:
     id: str
     name: str
@@ -73,3 +113,4 @@ class EncounterState:
     status: str = "active"
     winner_team: str | None = None
     log: list[str] = field(default_factory=list)
+    last_resolution: ActionResolution | None = None

@@ -11,6 +11,7 @@ from fantasy_strategy_sandbox.content.loaders import load_encounter, load_map
 
 class ContentLoaderTests(unittest.TestCase):
     def test_load_map_rejects_unsupported_version(self) -> None:
+        """Verify map loading rejects unsupported version numbers."""
         map_data = {
             "version": 2,
             "map_id": "invalid-map",
@@ -25,6 +26,7 @@ class ContentLoaderTests(unittest.TestCase):
             load_map(path)
 
     def test_load_map_rejects_non_positive_movement_cost(self) -> None:
+        """Verify map loading rejects zero or negative movement cost."""
         map_data = {
             "version": 1,
             "map_id": "invalid-map",
@@ -39,6 +41,7 @@ class ContentLoaderTests(unittest.TestCase):
             load_map(path)
 
     def test_load_encounter_rejects_empty_teams(self) -> None:
+        """Verify encounter loading rejects missing teams."""
         encounter_data = {
             "encounter_id": "invalid-encounter",
             "map_id": "training-yard",
@@ -51,6 +54,7 @@ class ContentLoaderTests(unittest.TestCase):
             load_encounter(path)
 
     def test_load_encounter_rejects_hp_outside_valid_range(self) -> None:
+        """Verify encounter loading rejects HP outside ``0..max_hp``."""
         encounter_data = {
             "encounter_id": "invalid-encounter",
             "map_id": "training-yard",
@@ -79,6 +83,12 @@ class ContentLoaderTests(unittest.TestCase):
             load_encounter(path)
 
     def _write_json(self, payload: dict) -> Path:
+        """Write one JSON fixture file for loader tests.
+
+        Args:
+            payload: JSON-serializable object. The current tests pass mapping
+                payloads that match the expected file schema.
+        """
         temp_dir = tempfile.TemporaryDirectory()
         self.addCleanup(temp_dir.cleanup)
         path = Path(temp_dir.name) / "fixture.json"

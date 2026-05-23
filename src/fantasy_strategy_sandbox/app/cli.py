@@ -8,6 +8,14 @@ from fantasy_strategy_sandbox.app.runtime import Command
 
 
 def main(argv: Sequence[str] | None = None) -> None:
+    """Parse CLI arguments and launch the selected runtime mode.
+
+    Args:
+        argv: Optional argument list without the executable name. ``None`` means
+            ``sys.argv[1:]``. ``mode`` accepts ``headless`` or ``viewer``.
+        ``--max-frames`` accepts ``None`` or an integer ``>= 1`` for practical
+            use.
+    """
     args = _parse_args(argv)
     if args.mode == "viewer":
         run_viewer(max_frames=args.max_frames)
@@ -16,6 +24,7 @@ def main(argv: Sequence[str] | None = None) -> None:
 
 
 def run_headless_demo() -> None:
+    """Run the headless demo and print a compact encounter snapshot."""
     runtime = create_training_yard_runtime()
     summary = runtime.summary()
     print(f"Encounter: {summary['encounter_id']}")
@@ -32,12 +41,19 @@ def run_headless_demo() -> None:
     print("\nExample commands:")
     for example in (
         Command(type="move_unit", unit_id=summary["active_unit_id"], target={"x": 2, "y": 1}),
+        Command(type="use_action", unit_id=summary["active_unit_id"], action_id="attack", target_id="fighter_1"),
         Command(type="end_turn", unit_id=summary["active_unit_id"]),
     ):
         print(f"  {example}")
 
 
 def run_viewer(max_frames: int | None = None) -> None:
+    """Start the Pygame tactical viewer demo.
+
+    Args:
+        max_frames: Optional frame cap for smoke tests. ``None`` runs until the
+            window closes. Practical values are integers ``>= 1``.
+    """
     from fantasy_strategy_sandbox.render.viewer import TacticalViewer
 
     runtime = create_training_yard_runtime()
@@ -45,6 +61,13 @@ def run_viewer(max_frames: int | None = None) -> None:
 
 
 def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
+    """Parse CLI arguments for the demo launcher.
+
+    Args:
+        argv: Optional argument list without the executable name. ``None`` means
+            ``sys.argv[1:]``. ``mode`` is limited to ``headless`` or ``viewer``.
+            ``--max-frames`` is optional and should be ``>= 1`` when used.
+    """
     parser = argparse.ArgumentParser(description="Fantasy Strategy Sandbox demo launcher.")
     parser.add_argument(
         "mode",

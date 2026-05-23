@@ -26,3 +26,4 @@ tests/test_content_loaders.py
 tests/test_demo_runtime.py
 tests/test_render_projection.py
 tests/test_runtime.py
+tests/test_viewer_state_visualization.py

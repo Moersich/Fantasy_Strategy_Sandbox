@@ -10,6 +10,13 @@ _SUPPORTED_MAP_VERSION = 1
 
 
 def load_map(path: Path) -> GameMap:
+    """Load and validate one map JSON document from disk.
+
+    Args:
+        path: Filesystem path to a JSON file. The file must contain a version-1
+            map document with positive width/height and tile coordinates inside
+            ``[0, width - 1]`` and ``[0, height - 1]``.
+    """
     data = _read_json(path)
     required_keys = {"version", "map_id", "size", "tiles", "spawns"}
     missing = required_keys - data.keys()
@@ -70,6 +77,14 @@ def load_map(path: Path) -> GameMap:
 
 
 def load_encounter(path: Path) -> EncounterDefinition:
+    """Load and validate one encounter JSON document from disk.
+
+    Args:
+        path: Filesystem path to a JSON file. The file must define at least one
+            team and at least one unit per team. Unit fields must satisfy these
+            ranges: ``max_hp > 0``, ``0 <= hp <= max_hp``, ``ac > 0``,
+            ``speed >= 0``, and every attack ``range > 0``.
+    """
     data = _read_json(path)
     required_keys = {"encounter_id", "map_id", "teams"}
     missing = required_keys - data.keys()
@@ -147,5 +162,10 @@ def load_encounter(path: Path) -> EncounterDefinition:
 
 
 def _read_json(path: Path) -> dict:
+    """Read and decode a UTF-8 JSON object from disk.
+
+    Args:
+        path: Filesystem path to an existing JSON file.
+    """
     with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)

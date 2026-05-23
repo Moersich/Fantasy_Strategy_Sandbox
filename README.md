@@ -9,13 +9,14 @@ The repository currently contains:
 - JSON-based map loading
 - JSON-based encounter loading
 - deterministic encounter startup with seeded initiative
-- turn handling for `move_unit`, `attack_target`, `dash`, and `end_turn`
+- turn handling for `move_unit`, `use_action`, `attack_target`, `dash`, and `end_turn`
+- a first-class Attack Action PoC with simplified DnD 5e hit, miss, and crit handling
 - movement reachability queries
 - a Pygame-based tactical viewer foundation with static isometric map rendering
 - a playable viewer demo with movement, turn ending, overlays, and on-screen feedback
 - automated tests for the current runtime behavior
 
-The current viewer implementation now supports map rendering, unit visualization, active-turn display, movement selection, end-turn input, and basic demo feedback.
+The current viewer implementation now supports map rendering, unit visualization, active-turn display, movement selection, Attack Action targeting, end-turn input, and basic demo feedback.
 
 ## Starting the project
 
@@ -50,7 +51,9 @@ This starts the current interactive rendering demo for the training-yard map.
 Viewer controls:
 
 - left click on a highlighted tile to move the active unit
-- left click on any other tile to inspect or attempt a destination
+- press `A` to toggle Attack Action targeting for the active unit
+- left click on a highlighted enemy tile in attack mode to use Attack Action
+- left click on any other tile to inspect or attempt a destination/target
 - press `Space` to end the current unit's turn
 
 For a short smoke test run, you can limit the viewer loop:

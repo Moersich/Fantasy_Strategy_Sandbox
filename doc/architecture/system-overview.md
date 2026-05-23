@@ -16,11 +16,12 @@ The repository now contains a working Python headless core and a first playable 
 - map and encounter content loading from JSON
 - combat and turn-state models
 - deterministic encounter startup with seeded initiative
-- command execution for movement, attack, dash, and end turn
+- command execution for movement, explicit actions, dash, and end turn
+- a first-class Attack Action PoC with simplified DnD-style hit, miss, and crit resolution
 - movement queries and automated runtime tests
 - a Pygame-based viewer runtime
 - static isometric-style terrain rendering
-- unit visualization, active-turn highlighting, reachable-tile overlays, click-to-move, and end-turn input
+- unit visualization, active-turn highlighting, reachable-tile overlays, click-to-move, attack targeting, and end-turn input
 
 The primary architectural gaps are no longer the basic viewer or core integration. The remaining gaps are line-of-sight and cover queries, richer combat interaction, and further demo polish on top of the current viewer slice.
 
@@ -108,6 +109,7 @@ Today the repository delivers two connected runtime slices:
   - load map and encounter data
   - start an encounter deterministically
   - execute discrete turn commands
+  - expose available actions and legal targets for the active unit
   - inspect encounter summary in a CLI/demo entry point
   - verify core behavior through automated tests
 
@@ -115,7 +117,7 @@ Today the repository delivers two connected runtime slices:
   - render the training-yard map in a lightweight isometric-style view
   - display units, active turn state, and simple HUD feedback
   - show reachable-tile overlays for the active unit
-  - forward click-to-move and end-turn input into the existing core
+  - forward click-to-move, Attack Action targeting, and end-turn input into the existing core
 
 The next planned delivery slice is not the first viewer itself, but the next viewer increment: richer combat interaction and missing deterministic combat queries such as line of sight and cover.
 

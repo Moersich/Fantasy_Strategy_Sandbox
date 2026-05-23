@@ -23,6 +23,17 @@ def reachable_tiles(
     movement_budget: int,
     occupied: set[TileCoord],
 ) -> dict[TileCoord, int]:
+    """Compute reachable tiles and their total movement cost.
+
+    Args:
+        game_map: Map used for tile existence, walkability, and movement cost
+            lookups.
+        start: Origin tile for the search. It should exist on ``game_map``.
+        movement_budget: Maximum total movement cost the unit may spend.
+            Expected range is ``>= 0``.
+        occupied: Tiles currently occupied by living units. Any tile in this set
+            blocks movement except the ``start`` tile.
+    """
     visited: dict[TileCoord, int] = {start: 0}
     queue: deque[TileCoord] = deque([start])
 
@@ -51,8 +62,19 @@ def reachable_tiles(
 
 
 def grid_distance(start: TileCoord, end: TileCoord) -> int:
+    """Return Chebyshev grid distance for 8-direction movement.
+
+    Args:
+        start: Origin tile coordinate.
+        end: Destination tile coordinate.
+    """
     return max(abs(start.x - end.x), abs(start.y - end.y))
 
 
 def neighbors(coord: TileCoord) -> list[TileCoord]:
+    """Return the 8 neighboring tile coordinates around one tile.
+
+    Args:
+        coord: Center tile coordinate.
+    """
     return [TileCoord(coord.x + dx, coord.y + dy) for dx, dy in _DIRECTIONS]

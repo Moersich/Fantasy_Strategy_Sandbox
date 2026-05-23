@@ -126,6 +126,7 @@ Version 1 may defer bonus actions and reactions in rules execution, but the arch
 The combat architecture should accept discrete commands such as:
 - `start_encounter`
 - `move_unit`
+- `use_action`
 - `attack_target`
 - `dash`
 - `end_turn`
@@ -148,6 +149,8 @@ Suggested command shape:
 ```
 
 The important part is not the exact syntax but the boundary: commands reference logical IDs and logical tile coordinates, never renderer objects.
+
+For Version 1, `attack_target` may exist as a compatibility wrapper, but the preferred long-term pattern is a generic `use_action` command plus action metadata and legal-target queries owned by the combat core.
 
 ## Encounter Lifecycle
 The encounter lifecycle should be modeled as a stable sequence:
@@ -175,5 +178,6 @@ Version 1 maps are flat, but the model must keep `height` in the schema from day
 ## Version 1 Gameplay Simplifications
 To keep the first implementation understandable and shippable:
 - support `move`, `attack`, `dash`, and `end_turn`
+- expose legal Attack Action targets through the core so the viewer does not own attack validation
 - reserve fields for bonus action and reaction, but allow their rule handling to come later
 - allow line-of-sight and cover to start simple as long as they stay outside the renderer

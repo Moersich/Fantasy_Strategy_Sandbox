@@ -36,7 +36,8 @@ The following pieces already exist in code:
 - JSON encounter loading
 - encounter state and turn state models
 - deterministic initiative and encounter startup
-- command execution for movement, attack, dash, and end turn
+- command execution for movement, Attack Action, dash, and end turn
+- an explicit action-selection/query surface for the active unit
 - movement-range query logic
 - Pygame viewer entry and runtime split
 - isometric-style map rendering
@@ -86,9 +87,10 @@ The following pieces already exist in code:
 - occupancy affects movement
 - line of sight and cover queries can be tested outside rendering
 - move, attack, dash, and end-turn commands are validated against explicit turn state
+- available actions and legal targets can be queried without renderer-owned rules
 - end-turn and round-advance transitions are testable without a renderer
 
-**Status:** partially complete. Movement and turn validation exist; line of sight and cover are still missing.
+**Status:** mostly complete for the current slice. Movement, turn validation, Attack Action flow, and action-target queries exist; line of sight and cover are still missing.
 
 ## Open Decisions
 - whether Version 1 needs interactive map editing
@@ -103,7 +105,7 @@ The following pieces already exist in code:
 The next implementation step should build on the playable viewer demo:
 
 1. complete missing deterministic combat queries such as line of sight and cover,
-2. expand viewer interaction beyond movement and end turn,
+2. expand viewer interaction beyond movement, Attack Action, and end turn,
 3. add richer combat feedback and scenario coverage,
 4. keep the viewer aligned with the same core command model.
 

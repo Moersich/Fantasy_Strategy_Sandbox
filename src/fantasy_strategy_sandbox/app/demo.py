@@ -9,6 +9,12 @@ _TRAINING_ENCOUNTER_PATH = Path("data/encounters/training-yard-skirmish.json")
 
 
 def create_training_yard_runtime(start_encounter: bool = True) -> GameRuntime:
+    """Create the shared demo runtime for the training-yard content.
+
+    Args:
+        start_encounter: When ``True``, start combat immediately. When ``False``,
+            return a runtime that still requires ``start_encounter()``.
+    """
     # Keep both runtime modes bound to the same content fixture so the viewer
     # remains an adapter over the core instead of a second gameplay path.
     runtime = GameRuntime.from_files(_TRAINING_MAP_PATH, _TRAINING_ENCOUNTER_PATH)

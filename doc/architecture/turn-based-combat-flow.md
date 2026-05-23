@@ -38,6 +38,7 @@ For developers, it is usually enough to implement these as an enum or equivalent
 Version 1 should model at least these commands:
 - `start_encounter`
 - `move_unit`
+- `use_action`
 - `attack_target`
 - `dash`
 - `end_turn`
@@ -51,6 +52,7 @@ Commands should:
 Example command payloads:
 
 ```python
+{"type": "use_action", "unit_id": "fighter_1", "action_id": "attack", "target_id": "goblin_2"}
 {"type": "attack_target", "unit_id": "fighter_1", "target_id": "goblin_2"}
 {"type": "end_turn", "unit_id": "fighter_1"}
 ```
@@ -65,7 +67,8 @@ This keeps Version 1 simple while staying compatible with DnD-style action econo
 
 Suggested Version 1 rule interpretation:
 - `move_unit` spends movement only
-- `attack_target` spends the main action
+- `use_action` spends the declared action resource according to the action definition
+- `attack_target` may remain as a compatibility wrapper over `use_action`
 - `dash` spends the main action and increases movement budget according to the simplified DnD rule set
 - `end_turn` closes the active unit turn even if resources remain
 
@@ -90,6 +93,7 @@ This is required for:
 The viewer may:
 - display the active unit
 - display available actions
+- display legal action targets
 - send player intent as commands
 
 The viewer must not:
