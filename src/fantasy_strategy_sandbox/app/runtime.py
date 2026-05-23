@@ -44,19 +44,21 @@ class GameRuntime:
         return self.encounter_state
 
     def execute(self, command: Command) -> EncounterState:
-        if self.encounter_state is None:
-            raise RuntimeError("Encounter has not been started.")
+        state = self.current_state()
         self.encounter_state = self.turn_engine.execute(
-            state=self.encounter_state,
+            state=state,
             game_map=self.game_map,
             command=command,
         )
         return self.encounter_state
 
-    def summary(self) -> dict[str, Any]:
+    def current_state(self) -> EncounterState:
         if self.encounter_state is None:
             raise RuntimeError("Encounter has not been started.")
-        state = self.encounter_state
+        return self.encounter_state
+
+    def summary(self) -> dict[str, Any]:
+        state = self.current_state()
         return {
             "encounter_id": state.encounter_id,
             "map_id": state.map_id,

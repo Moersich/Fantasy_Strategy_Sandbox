@@ -7,6 +7,9 @@ name = "fantasy-strategy-sandbox"
 version = "0.1.0"
 description = "Turn-based tactical combat sandbox with a flat-map core slice."
 requires-python = ">=3.12"
+dependencies = [
+    "pygame>=2.6,<3",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

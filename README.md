@@ -4,26 +4,53 @@ Fantasy Strategy Sandbox is a Python-based tactical combat sandbox focused on a 
 
 ## Current implementation status
 
-The repository already contains a working headless core slice for a small flat combat map:
+The repository currently contains:
 
 - JSON-based map loading
 - JSON-based encounter loading
 - deterministic encounter startup with seeded initiative
 - turn handling for `move_unit`, `attack_target`, `dash`, and `end_turn`
 - movement reachability queries
+- a Pygame-based tactical viewer foundation with static isometric map rendering
 - automated tests for the current runtime behavior
 
-The tactical viewer described in the architecture documents is **not** implemented yet. The current executable slice is the headless runtime.
+The current viewer implementation covers the rendering foundation for the training-yard map. Unit rendering and player interaction are still part of the next stages.
 
-## Running the current runtime slice
+## Starting the project
 
-Run the demo encounter from the project root:
+Install the project and its dependencies from the project root:
 
 ```bash
-python3 main.py
+python3 -m pip install -e .
 ```
 
+### Headless demo
+
+Run the headless demo encounter:
+
+```bash
+python3 main.py headless
+```
+
+If no mode is provided, `headless` is used by default.
+
 This starts the headless runtime, loads the training-yard encounter, and prints a summary of the current combat state plus example commands.
+
+### Tactical viewer
+
+Run the Pygame viewer:
+
+```bash
+python3 main.py viewer
+```
+
+This starts the current rendering demo for the training-yard map.
+
+For a short smoke test run, you can limit the viewer loop:
+
+```bash
+python3 main.py viewer --max-frames 1
+```
 
 ## Architecture documentation
 
