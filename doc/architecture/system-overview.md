@@ -1,7 +1,7 @@
 # System Overview
 
 ## Purpose
-This document describes the target architecture for the Python-based 3D isometric terrain layer of the DnD strategy sandbox.
+This document describes the target architecture for the Python-based tactical combat sandbox and its later 3D isometric viewer.
 
 The architectural goal is to support:
 - lightweight 3D isometric rendering
@@ -12,18 +12,26 @@ The architectural goal is to support:
 - later reuse of the same core in headless simulations
 
 ## Current Repository State
-The repository currently contains project notes and DnD rule summaries, but no Python implementation yet. This architecture therefore defines the target structure before code is written.
+The repository already contains a working Python headless core slice:
+- map and encounter content loading from JSON
+- combat and turn-state models
+- deterministic encounter startup with seeded initiative
+- command execution for movement, attack, dash, and end turn
+- movement queries and automated runtime tests
+
+The primary architectural gap is no longer the gameplay core, but the absence of the tactical viewer, line-of-sight/cover queries, and a synchronized project-level roadmap in the documentation.
 
 ## How To Read This Architecture
 For day-to-day implementation work, use the documents in this order:
 1. `system-overview.md`
 2. `world-and-combat-model.md`
 3. `turn-based-combat-flow.md`
-4. `isometric-projection-and-interaction.md`
+4. `runtime-modes.md`
 5. `content-and-map-format.md`
 6. `implementation-readiness.md`
+7. `isometric-projection-and-interaction.md`
 
-This order moves from system boundaries to state model, then to runtime flow and data contracts.
+This order moves from system boundaries to state model, then to runtime flow, operational mode boundaries, and data contracts.
 
 ## Scope of Version 1
 Version 1 focuses on:
@@ -57,40 +65,39 @@ Version 1 does **not** require:
 - **Rendering Adapter**: renders terrain, units, highlights, and overlays.
 - **Content and Serialization Layer**: loads and validates maps and encounter data.
 
-## Suggested Package Layout
-The exact implementation can evolve, but the current architecture maps naturally to a structure like:
+## Current Package Layout
+The current implementation is organized around the following package structure:
 
 ```text
 project/
   main.py
-  app/
-    runtime.py
-    command_dispatch.py
-  world/
-    map_state.py
-    occupancy.py
-  combat/
-    encounter_state.py
-    rules.py
-    turn_engine.py
-  queries/
-    movement.py
-    los.py
-    cover.py
-  render/
-    scene_builder.py
-    overlays.py
-    camera.py
-  iso/
-    projection.py
-    picking.py
-  content/
-    map_loader.py
-    encounter_loader.py
-    validation.py
+  src/fantasy_strategy_sandbox/
+    app/
+      runtime.py
+    combat/
+      models.py
+      turn_engine.py
+    content/
+      loaders.py
+    queries/
+      movement.py
+    world/
+      models.py
+  tests/
+    test_runtime.py
 ```
 
-This is not a fixed contract, but it gives developers a concrete starting translation from architecture to code.
+This is the current working baseline. The architecture still anticipates additional packages such as `render/`, `iso/`, and more query modules like `los.py` and `cover.py`, but those are future implementation targets rather than current repository contents.
+
+## Current Delivery Slice
+Today the repository delivers the **Headless Core** runtime mode:
+- load map and encounter data
+- start an encounter deterministically
+- execute discrete turn commands
+- inspect encounter summary in a CLI/demo entry point
+- verify core behavior through automated tests
+
+The next planned delivery slice is the **Tactical Viewer**, which should remain an adapter over the same core instead of becoming a second gameplay implementation.
 
 ## Turn-Based Architecture Consequence
 The game must behave as a discrete state machine:
@@ -113,7 +120,7 @@ Dependencies must point toward the core:
 
 Adapters communicate with the core through the application layer or stable service interfaces. The reverse direction is not allowed.
 
-## Planned Architecture Documents
+## Architecture Documents
 - `runtime-modes.md`
 - `world-and-combat-model.md`
 - `turn-based-combat-flow.md`

@@ -19,7 +19,7 @@ The tactical viewer must not:
 - advance turns on its own outside the combat/turn systems
 
 ## Mode 2: Headless Core
-The headless core is a planned runtime mode for later balancing, automated testing, and AI simulations.
+The headless core is the currently implemented runtime mode and remains essential for later balancing, automated testing, and AI simulations.
 
 Responsibilities:
 - load maps and encounters
@@ -27,9 +27,23 @@ Responsibilities:
 - expose deterministic outputs for tests and statistics
 - support automated turn stepping for AI and simulation runs
 
+Current repository status:
+- implemented as the current executable slice
+- exposed through `main.py` and the `GameRuntime` application service
+- covered by automated tests for encounter startup and core commands
+
 Architectural consequence:
 - the same world, combat, and query modules must run both with and without graphics
 - the same turn engine must process the same command semantics in both modes
+
+## Current Mode Priority
+Although the tactical viewer remains the primary product-facing target, the repository currently ships the headless core first. This is intentional architectural sequencing:
+
+1. establish deterministic gameplay state and command handling,
+2. validate rules in tests without a renderer,
+3. add the viewer as an adapter on top of the same core.
+
+The next runtime milestone is therefore not a second gameplay path, but a viewer adapter over the already working headless systems.
 
 ## Future Mode: Map Editing
 An editor is a future concern, not a Version 1 requirement.
